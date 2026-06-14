@@ -6,6 +6,8 @@ import imaplib
 
 from config import EMAIL_ADDRESS, EMAIL_PASSWORD
 from client import connect 
+from scanner import scan_senders, print_top_senders
+
 
 def main():
     # Make sure the credentials actually loaded from .env
@@ -25,17 +27,9 @@ def main():
         print(f"  Connection error: {e}")
         return
     
-    # List the mail folders 
-    status, folders = mail.list()
-    print(f"\nFound {len(folders)} folders:")
-    for f in folders:
-        print(" ", f.decode())
-
-    # Count messages in inbox 
-    mail.select("INBOX")
-    status, data = mail.search(None, "ALL")
-    count = len(data[0].split()) if data[0] else 0
-    print(f"\nINBOX contains {count} messages.")
+    # Scan the inbox and count senders
+    counts = scan_senders(mail)
+    print_top_senders(counts, top=25)
 
     mail.logout()
     print("\nDone - your connection works, Ready to build the scanner next.")

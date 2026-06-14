@@ -1,0 +1,35 @@
+# blocklist.txt — domains to sweep out of the inbox.
+# One domain per line. Lines starting with # are ignored.
+# Built from the scanner's top-senders list.
+
+# --- Junk / daily-blast mailers ---
+pomailer9.com
+todayinhistory.org
+torahblast.com
+academia-mail.com
+of-the-day.com
+jobs2careers.com
+
+# --- Marketing / promos ---
+mail.stash.com
+email.bestbuy.com
+jimmyjohns.com
+ufcemail.com
+customink.com
+puffitup.com
+emailinfo.buffalowildwings.com
+m.redbubble.com
+engage.ticketmaster.com
+email.peacocktv.com
+
+# --- Services / accounts ---
+linkedin.com
+venmo.com
+reply.ebay.com
+indeed.com
+digital.costco.com
+washingtonpost.com
+uber.com
+
+# Canvas (school) 
+instructure.com

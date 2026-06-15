@@ -7,7 +7,7 @@ import imaplib
 from config import EMAIL_ADDRESS, EMAIL_PASSWORD
 from client import connect 
 from scanner import scan_senders, print_top_senders
-from blocklist import load_blocklist, find_blocked, report
+from blocklist import load_blocklist, find_blocked, report, sweep
 
 
 def main():
@@ -32,7 +32,8 @@ def main():
     print("\nWhat do you want to do?")
     print("  1. Scan and rank senders")
     print("  2. Dry run the blocklist (see what would be removed)")
-    choice = input("Enter 1 or 2: ").strip()    
+    print("  3. Sweep blocked mail into a folder (real asks first)")
+    choice = input("Enter 1, 2 or 3: ").strip()    
 
     if choice == "1":
         counts = scan_senders(mail)
@@ -41,6 +42,10 @@ def main():
         blocked = load_blocklist()
         matches = find_blocked(mail, blocked)
         report(matches)
+    elif choice == "3":
+        blocked = load_blocklist()
+        matches = find_blocked(mail, blocked)
+        sweep(mail, matches)
     else:
         print("No valid choice made.")
 

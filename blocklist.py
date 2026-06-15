@@ -81,3 +81,40 @@ def report(matches):
         print(f" {len(ids):>6} {domain}")
  
 
+
+def sweep(mail, matches, dest_folder="Blocked"):
+    """Move all matched messages into dest_folder. Asks first"""
+    total = sum(len(ids) for ids in matches.values())
+    if total == 0:
+        print("Nothing to move.")
+        return 
+    
+    # Make the mail destination already exist if it doesn't already
+    mail.create(dest_folder)
+
+    # Last chance to back out 
+    confirm = input(f"Move {total} messages to {dest_folder}? Type yes: ")
+    if confirm.lower() != "yes":
+        print("Cancelled - nothing moved.")
+        return
+
+    mail.select("INBOX")
+   
+    # Gather every matched message ID into one flat list 
+    all_ids = []
+    for ids in matches.values():
+        all_ids.extend(ids)
+
+    moved = 0
+    batch_size = 200
+    # Move in batches: copy a chunk and flag the same chunk at once
+    for start in range(0, len(all_ids), batch_size):
+        # Keep only non-empty IDs 
+        batch = [mid for mid in all_ids[start:start + batch_size] if mid]
+        if not batch:
+            continue
+        id_set = b",".join(batch)
+        mail.copy(id_set, dest_folder)
+        mail.store(id_set, "+FLAGS", "\\Deleted")
+        moved += len(batch) 
+        print(f"  moved {moved}/{len}")

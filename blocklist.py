@@ -117,4 +117,5 @@ def sweep(mail, matches, dest_folder="Blocked"):
         mail.copy(id_set, dest_folder)
         mail.store(id_set, "+FLAGS", "\\Deleted")
         moved += len(batch) 
-        print(f"  moved {moved}/{len}")
+        print(f"  moved {moved}/{len(all_ids)}")
+

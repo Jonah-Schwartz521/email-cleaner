@@ -8,6 +8,7 @@ from config import EMAIL_ADDRESS, EMAIL_PASSWORD
 from client import connect 
 from scanner import scan_senders, print_top_senders
 from blocklist import load_blocklist, find_blocked, report, sweep
+import categorize
 
 
 def main():
@@ -33,7 +34,8 @@ def main():
     print("  1. Scan and rank senders")
     print("  2. Dry run the blocklist (see what would be removed)")
     print("  3. Sweep blocked mail into a folder (real asks first)")
-    choice = input("Enter 1, 2 or 3: ").strip()    
+    print("  4. Sort kept mail into categry folders")
+    choice = input("Enter 1, 2, 3, or 4: ").strip()    
 
     if choice == "1":
         counts = scan_senders(mail)
@@ -46,6 +48,11 @@ def main():
         blocked = load_blocklist()
         matches = find_blocked(mail, blocked)
         sweep(mail, matches)
+    elif choice == "4":
+        rules = categorize.load_categories()
+        matches = categorize.find_categorized(mail, rules)
+        categorize.report(matches)
+        categorize.sort_mail(mail, matches)
     else:
         print("No valid choice made.")
 

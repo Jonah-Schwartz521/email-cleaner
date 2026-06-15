@@ -10,3 +10,4 @@ env/
 
 # Personal blocklist 
 data/blocklist.txt
+data/categories.txt
